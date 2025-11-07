@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Simple Modal Creatos</title>
+
+</head>
+
+<body>
+
+    <h1>Simple Modal Creator</h1>
+    <p>Create your own modal and generate html/css/js</p>
+
+    <main>
+
+        <form id="modalForm">
+            <div class="input-group">
+                <label class="input-group-label" for="modalWidth">Width</label>
+                <input class="input-group-item" type="number" name="modalWidth" id="modalWidth">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalHeight">Height</label>
+                <input class="input-group-item" type="number" name="modalHeight" id="modalHeight">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalBackgroundColor">Background</label>
+                <input class="input-group-item" type="color" name="modalBackgroundColor" id="modalBackgroundColor">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalBackdropColor">Backdrop</label>
+                <input class="input-group-item" type="color" name="modalBackdropColor" id="modalBackdropColor">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalAnimation">Animation</label>
+                <select class="input-group-item" type="color" name="modalAnimation" id="modalAnimation">
+                    <option value="default">Default</option>
+                    <option value="none">None</option>
+                    <option value="default">XX</option>
+                    <option value="default">XX</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalStyle">Style</label>
+                <select class="input-group-item" type="color" name="modalStyle" id="modalStyle">
+                    <option value="default">Default</option>
+                    <option value="none">None</option>
+                    <option value="default">XX</option>
+                    <option value="default">XX</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalWidth">Title</label>
+                <input class="input-group-item" type="text" name="modalWidth" id="modalWidth">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalWidth">Lorem</label>
+                <input class="input-group-item" type="text" name="modalWidth" id="modalWidth">
+            </div>
+        </form>
+
+        <div id="preview">
+            <div id="previewModal"></div>
+            <div id="previewModalBackdrop"></div>
+        </div>
+
+        <button id="generateCode">Generate Code <img src="./img/chemistry-icon.svg"></button>
+
+    </main>
+
+    <script src="./script.js"></script>
+
+</body>
+
+</html>

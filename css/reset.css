@@ -1,0 +1,8 @@
+* {
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+}
+
+h1, p, pre {
+    margin: 0px;
+}
