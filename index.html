@@ -33,11 +33,11 @@
             </div>
             <div class="input-group">
                 <label class="input-group-label" for="modalBackgroundColor">Background</label>
-                <input class="input-group-item" type="color" name="modalBackgroundColor" id="modalBackgroundColor">
+                <input class="input-group-item" type="color" name="modalBackgroundColor" id="modalBackgroundColor" value="#ffffff">
             </div>
             <div class="input-group">
                 <label class="input-group-label" for="modalBackdropColor">Backdrop</label>
-                <input class="input-group-item" type="color" name="modalBackdropColor" id="modalBackdropColor">
+                <input class="input-group-item" type="color" name="modalBackdropColor" id="modalBackdropColor" value="#000000">
             </div>
             <div class="input-group">
                 <label class="input-group-label" for="modalAnimation">Animation</label>
@@ -97,7 +97,7 @@
                     <button id="modalOkBtn">Ok</button>
                 </footer>
             </div>
-            <div class="modal-backdrop"></div>
+            <div id="modalBackdrop" class="modal-backdrop"></div>
         </div>
 
         <button id="generateCode">Generate Code <img src="./img/chemistry-icon.svg"></button>

@@ -2,6 +2,7 @@ class ModalCreator {
 
     constructor(modal, form) {
         this.element = document.querySelector(modal);
+        this.backdropElement = document.querySelector("#modalBackdrop");
         this.form = document.querySelector(form);
         this.modalChangeMethods = {};
     }
@@ -11,11 +12,21 @@ class ModalCreator {
         this.configModalChangeMethods();
     }
 
+    _hexToRgb(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
     addEventListeners() {
         const formElements = Array.from(this.form.elements);
         formElements.forEach((item) => {
             item.addEventListener("change", (event) => {
                 this.handleElementChange(item, event);
+                console.log(item.value);
             });
         });
     }
@@ -39,6 +50,13 @@ class ModalCreator {
             },
             height(height) {
                 this.element.style.height = height + "px";
+            },
+            backgroundColor(backgroundColor) {
+                this.element.style.backgroundColor = backgroundColor;
+            },
+            backdropColor(backdropColor) {
+                const rgb = this._hexToRgb(backdropColor);
+                this.backdropElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`
             }
         };
     }
