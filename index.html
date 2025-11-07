@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
 
-    <title>Simple Modal Creatos</title>
+    <title>Simple Modal Creator</title>
 
 </head>
 
@@ -41,7 +41,7 @@
             </div>
             <div class="input-group">
                 <label class="input-group-label" for="modalAnimation">Animation</label>
-                <select class="input-group-item" type="color" name="modalAnimation" id="modalAnimation">
+                <select class="input-group-item" name="modalAnimation" id="modalAnimation">
                     <option value="default">Default</option>
                     <option value="none">None</option>
                     <option value="default">XX</option>
@@ -50,7 +50,7 @@
             </div>
             <div class="input-group">
                 <label class="input-group-label" for="modalStyle">Style</label>
-                <select class="input-group-item" type="color" name="modalStyle" id="modalStyle">
+                <select class="input-group-item" name="modalStyle" id="modalStyle">
                     <option value="default">Default</option>
                     <option value="none">None</option>
                     <option value="default">XX</option>
@@ -58,18 +58,46 @@
                 </select>
             </div>
             <div class="input-group">
-                <label class="input-group-label" for="modalWidth">Title</label>
-                <input class="input-group-item" type="text" name="modalWidth" id="modalWidth">
+                <label class="input-group-label" for="modalTitle">Title</label>
+                <input class="input-group-item" type="text" name="modalTitle" id="modalTitle">
             </div>
             <div class="input-group">
-                <label class="input-group-label" for="modalWidth">Lorem</label>
-                <input class="input-group-item" type="text" name="modalWidth" id="modalWidth">
+                <label class="input-group-label" for="modalColor">Color</label>
+                <input class="input-group-item" type="color" name="modalColor" id="modalColor">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalOk">Ok Button</label>
+                <select class="input-group-item" name="modalOk" id="modalOk">
+                    <option value="default">Default</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalClosing">Closing Button</label>
+                <select class="input-group-item" name="modalClosing" id="modalClosing">
+                    <option value="default">Top + Bottom</option>
+                    <option value="none">Only Top</option>
+                    <option value="default">Only Bottom</option>
+                    <option value="default">None</option>
+                </select>
             </div>
         </form>
 
         <div id="preview">
-            <div id="previewModal"></div>
-            <div id="previewModalBackdrop"></div>
+            <div id="modalPreview" class="modal">
+                <header class="modal-header">
+                    <h3>Title</h3>
+                    <button id="modalCloseBtn"></button>
+                </header>
+                <section class="modal-body">
+                    Lorem Ipsum
+                </section>
+                <footer class="modal-footer">
+                    <button id="modalCancelBtn">Cancel</button>
+                    <button id="modalOkBtn">Ok</button>
+                </footer>
+            </div>
+            <div class="modal-backdrop"></div>
         </div>
 
         <button id="generateCode">Generate Code <img src="./img/chemistry-icon.svg"></button>
