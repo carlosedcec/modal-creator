@@ -92,11 +92,11 @@
 }
 
 .modal-footer #modalCancelBtn {
-    background-color: rgb(189, 64, 64);
+    background-color: #bd4040;
 }
 
 .modal-footer #modalCancelBtn:hover {
-    background-color: rgb(156, 41, 41);
+    background-color: #9c2929;
 }
 
 .modal-footer #modalOkBtn {

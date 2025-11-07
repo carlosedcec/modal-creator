@@ -40,6 +40,38 @@
                 <input class="input-group-item" type="color" name="modalBackdropColor" id="modalBackdropColor" value="#000000">
             </div>
             <div class="input-group">
+                <label class="input-group-label" for="modalTitle">Title</label>
+                <input class="input-group-item" type="text" name="modalTitle" id="modalTitle">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalTextColor">Text Color</label>
+                <input class="input-group-item" type="color" name="modalTextColor" id="modalTextColor">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalOkButton">Ok Button</label>
+                <select class="input-group-item" name="modalOkButton" id="modalOkButton">
+                    <option value="default">Default</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalOkButtonColor">Ok Color</label>
+                <input class="input-group-item" type="color" name="modalOkButtonColor" id="modalOkButtonColor" value="#447797">
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalClosingButton">Closing Button</label>
+                <select class="input-group-item" name="modalClosingButton" id="modalClosingButton">
+                    <option value="topbottom">Top + Bottom</option>
+                    <option value="top">Only Top</option>
+                    <option value="bottom">Only Bottom</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalClosingButtonColor">Closing Color</label>
+                <input class="input-group-item" type="color" name="modalClosingButtonColor" id="modalClosingButtonColor" value="#bd4040">
+            </div>
+            <!-- <div class="input-group">
                 <label class="input-group-label" for="modalAnimation">Animation</label>
                 <select class="input-group-item" name="modalAnimation" id="modalAnimation">
                     <option value="default">Default</option>
@@ -56,31 +88,7 @@
                     <option value="default">XX</option>
                     <option value="default">XX</option>
                 </select>
-            </div>
-            <div class="input-group">
-                <label class="input-group-label" for="modalTitle">Title</label>
-                <input class="input-group-item" type="text" name="modalTitle" id="modalTitle">
-            </div>
-            <div class="input-group">
-                <label class="input-group-label" for="modalColor">Color</label>
-                <input class="input-group-item" type="color" name="modalColor" id="modalColor">
-            </div>
-            <div class="input-group">
-                <label class="input-group-label" for="modalOk">Ok Button</label>
-                <select class="input-group-item" name="modalOk" id="modalOk">
-                    <option value="default">Default</option>
-                    <option value="none">None</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label class="input-group-label" for="modalClosing">Closing Button</label>
-                <select class="input-group-item" name="modalClosing" id="modalClosing">
-                    <option value="default">Top + Bottom</option>
-                    <option value="none">Only Top</option>
-                    <option value="default">Only Bottom</option>
-                    <option value="default">None</option>
-                </select>
-            </div>
+            </div> -->
         </form>
 
         <div id="preview">
@@ -104,6 +112,7 @@
 
     </main>
 
+    <script src="./js/ModalCreator.js"></script>
     <script src="./script.js"></script>
 
 </body>
