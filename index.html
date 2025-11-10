@@ -91,28 +91,30 @@
             </div> -->
         </form>
 
-        <div id="preview">
-            <div id="modalPreview" class="modal">
+        <div id="modalPreview" class="modal-container" data-open="true">
+            <button class="modal-open">Open Modal</button>
+            <div class="modal">
                 <header class="modal-header">
                     <h3>Title</h3>
-                    <button id="modalCloseBtn"></button>
+                    <button class="modal-close"></button>
                 </header>
                 <section class="modal-body">
                     Lorem Ipsum
                 </section>
                 <footer class="modal-footer">
-                    <button id="modalCancelBtn">Cancel</button>
-                    <button id="modalOkBtn">Ok</button>
+                    <button class="modal-cancel">Cancel</button>
+                    <button class="modal-ok">Ok</button>
                 </footer>
             </div>
-            <div id="modalBackdrop" class="modal-backdrop"></div>
+            <div class="modal-backdrop" class="modal-backdrop"></div>
         </div>
 
-        <button id="generateCode">Generate Code <img src="./img/chemistry-icon.svg"></button>
+        <button id="generateCode">Generate Code <img src="./img/chemistry-icon-blue.svg"></button>
 
     </main>
 
     <script src="./js/ModalCreator.js"></script>
+    <script src="./js/Modal.js"></script>
     <script src="./script.js"></script>
 
 </body>

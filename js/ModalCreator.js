@@ -1,11 +1,11 @@
 class ModalCreator {
 
-    constructor(modal, form) {
-        this.element = document.querySelector(modal);
-        this.backdropElement = document.querySelector("#modalBackdrop");
-        this.okButtonElement = document.querySelector(modal + " #modalOkBtn");
-        this.cancelButtonElement = document.querySelector(modal + " #modalCancelBtn");
-        this.closeButtonElement = document.querySelector(modal + " #modalCloseBtn");
+    constructor(modalContainer, form) {
+        this.containerElement = document.querySelector(modalContainer);
+        this.backdropElement = document.querySelector(modalContainer + ".modal-backdrop");
+        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
+        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
+        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
         this.form = document.querySelector(form);
         this.changeModalPreviewMethods = {};
         this.modalProperties = {};
@@ -51,7 +51,6 @@ class ModalCreator {
 
         // Save property
         this.modalProperties[property] = value;
-        console.log(this.modalProperties);
 
     }
 
@@ -61,23 +60,23 @@ class ModalCreator {
 
         this.changeModalPreviewMethods = {
             width(width) {
-                this.element.style.width = width + "px";
+                this.containerElement.style.width = width + "px";
             },
             height(height) {
-                this.element.style.height = height + "px";
+                this.containerElement.style.height = height + "px";
             },
             backgroundColor(backgroundColor) {
-                this.element.style.backgroundColor = backgroundColor;
+                this.containerElement.style.backgroundColor = backgroundColor;
             },
             backdropColor(backdropColor) {
                 const rgb = hexToRgb(backdropColor);
                 this.backdropElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`
             },
             title(title) {
-                this.element.getElementsByTagName("h3")[0].innerHTML = title;
+                this.containerElement.getElementsByTagName("h3")[0].innerHTML = title;
             },
             textColor(color) {
-                this.element.style.color = color;
+                this.containerElement.style.color = color;
             },
             okButton(value) {
                 if (value === "default") {
