@@ -1,7 +1,7 @@
 form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
     font-size: 0.9rem;
     align-content: start;
 }

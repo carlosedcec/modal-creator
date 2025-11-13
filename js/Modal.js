@@ -4,7 +4,7 @@ class Modal {
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
         this.backdropElement = document.querySelector(modalContainer + " .modal-backdrop");
-        this.openButtonElement = document.querySelector(modalContainer + " .modal-open");
+        this.openButtonElement = document.querySelector(modalContainer + " .modal-open-button");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
         this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
         this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
@@ -16,16 +16,35 @@ class Modal {
     }
 
     addEventListeners() {
+
+        const openButtons = [this.openButtonElement];
+        openButtons.forEach((item) => {
+            item.addEventListener("click", (event) => {
+                this.openModal(item, event);
+            });
+        });
+
         const closeButtons = [this.cancelButtonElement, this.closeButtonElement];
         closeButtons.forEach((item) => {
             item.addEventListener("click", (event) => {
                 this.closeModal(item, event);
             });
         });
+
+    }
+
+    openModal() {
+        this.containerElement.dataset.open = "true";
+        setTimeout(() => {
+            this.containerElement.classList.add("open");
+            this.containerElement.classList.remove("closed")
+        }, 50);
     }
 
     closeModal() {
-        this.containerElement.dataset.open = "false";
+        this.containerElement.classList.add("closed");
+        this.containerElement.classList.remove("open");
+        setTimeout(() => this.containerElement.dataset.open = "false", 300);
     }
 
 }

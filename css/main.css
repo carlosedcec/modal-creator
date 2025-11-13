@@ -1,9 +1,8 @@
 body {
-    height: 100vh;
     width: 84vw;
     max-width: 1200px;
     background-color: var(--color1);
-    margin: 40px auto;
+    margin: 60px auto 80px auto;
     color: var(--color2);
     font-family: "Poppins", "Verdana", sans-serif;
     font-size: 16px;
@@ -23,12 +22,12 @@ p {
 }
 
 main {
-    background: #eee;
+    background: linear-gradient(to top, #ddd, #eee);
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 40px 20px;
-    margin-top: 40px;
-    padding: 36px;
+    gap: 40px;
+    margin-top: 44px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.5);
 }
@@ -43,7 +42,7 @@ pre {
 
 button#generateCode {
     color: var(--color2);
-    background-color: var(--color1);
+    background: linear-gradient(to top, var(--color1-dark), var(--color1));
     grid-column: span 2;
     text-transform: uppercase;
     font-family: "Poppins";

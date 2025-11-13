@@ -2,6 +2,7 @@ class ModalCreator {
 
     constructor(modalContainer, form) {
         this.containerElement = document.querySelector(modalContainer);
+        this.modalElement = document.querySelector(modalContainer + " .modal");
         this.backdropElement = document.querySelector(modalContainer + ".modal-backdrop");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
         this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
@@ -60,23 +61,23 @@ class ModalCreator {
 
         this.changeModalPreviewMethods = {
             width(width) {
-                this.containerElement.style.width = width + "px";
+                this.modalElement.style.width = width + "px";
             },
             height(height) {
-                this.containerElement.style.height = height + "px";
+                this.modalElement.style.height = height + "px";
             },
             backgroundColor(backgroundColor) {
-                this.containerElement.style.backgroundColor = backgroundColor;
+                this.modalElement.style.backgroundColor = backgroundColor;
             },
             backdropColor(backdropColor) {
                 const rgb = hexToRgb(backdropColor);
                 this.backdropElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`
             },
             title(title) {
-                this.containerElement.getElementsByTagName("h3")[0].innerHTML = title;
+                this.modalElement.getElementsByTagName("h3")[0].innerHTML = title;
             },
             textColor(color) {
-                this.containerElement.style.color = color;
+                this.modalElement.style.color = color;
             },
             okButton(value) {
                 if (value === "default") {
