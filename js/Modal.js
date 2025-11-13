@@ -1,10 +1,9 @@
 class Modal {
 
-    constructor(modalContainer) {
+    constructor(modalContainer, openButton) {
+        this.openButtonElement = document.querySelector(openButton);
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-        this.backdropElement = document.querySelector(modalContainer + " .modal-backdrop");
-        this.openButtonElement = document.querySelector(modalContainer + " .modal-open-button");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
         this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
         this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");

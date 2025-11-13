@@ -1,4 +1,6 @@
 const modalCreator = new ModalCreator("#modalPreview", "#modalForm");
 modalCreator.init();
 
-const modal = new Modal("#modalPreview");
+const modalPreview = new Modal("#modalPreview", "#modalPreviewDesktop .modal-open-button");
+
+const modalCode = new Modal("#modalCode", "#generateCode");

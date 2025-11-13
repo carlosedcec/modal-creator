@@ -91,8 +91,7 @@
             </div> -->
         </form>
 
-        <div id="modalPreview" class="modal-container" data-open="true">
-            <button class="modal-open-button">Open Modal</button>
+        <div id="modalPreview" class="modal-container open" data-open="true">
             <div class="modal">
                 <header class="modal-header">
                     <h3>Title</h3>
@@ -106,12 +105,28 @@
                     <button class="modal-ok">Ok</button>
                 </footer>
             </div>
-            <div class="modal-backdrop" class="modal-backdrop"></div>
+        </div>
+
+        <div id="modalPreviewDesktop">
+            <button class="modal-open-button">Open Modal</button>
         </div>
 
         <button id="generateCode">Generate Code <img src="./img/chemistry-icon-blue.svg"></button>
 
     </main>
+
+    <article id="modalCode" class="modal-container" data-open="false">
+        <div class="modal">
+            <header class="modal-header">Code</header>
+            <section class="modal-body">
+                <pre>code here</pre>
+            </section>
+            <footer class="modal-footer">
+                <button class="modal-cancel">Cancel</button>
+                <button class="modal-ok">Ok</button>
+            </footer>
+        </div>
+    </article>
 
     <script src="./js/ModalCreator.js"></script>
     <script src="./js/Modal.js"></script>

@@ -1,15 +1,17 @@
 class ModalCreator {
 
     constructor(modalContainer, form) {
+
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-        this.backdropElement = document.querySelector(modalContainer + ".modal-backdrop");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
         this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
         this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
+
         this.form = document.querySelector(form);
         this.changeModalPreviewMethods = {};
         this.modalProperties = {};
+
     }
 
     init() {
