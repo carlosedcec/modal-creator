@@ -91,7 +91,7 @@
             </div> -->
         </form>
 
-        <div id="modalPreview" class="modal-container open" data-open="true">
+        <div id="modalPreview" class="modal-container open scrollbar" data-open="true">
             <div class="modal">
                 <header class="modal-header">
                     <h3>Title</h3>
@@ -107,8 +107,8 @@
             </div>
         </div>
 
-        <div id="modalPreviewDesktop">
-            <button class="modal-open-button">Open Modal</button>
+        <div id="modalPreviewBackground">
+            <button id="openModalPreview">Open Modal</button>
         </div>
 
         <button id="generateCode">Generate Code <img src="./img/chemistry-icon-blue.svg"></button>
@@ -122,24 +122,23 @@
                 <div class="code code-html">
                     <h3>
                         HTML
-                        <button class="button-copy">Copy</button>
+                        <button class="button-copy" data-code="html">Copy</button>
                     </h3>
-                    <pre>Asda
-                        sasdas</pre>
+                    <pre class="scrollbar"></pre>
                 </div>
                 <div class="code code-css">
                     <h3>
                         CSS
-                        <button class="button-copy">Copy</button>
+                        <button class="button-copy" data-code="css">Copy</button>
                     </h3>
-                    <pre>css</pre>
+                    <pre class="scrollbar"></pre>
                 </div>
                 <div class="code code-js">
                     <h3>
                         JavaScript
-                        <button class="button-copy">Copy</button>
+                        <button class="button-copy" data-code="js">Copy</button>
                     </h3>
-                    <pre>dasd</pre>
+                    <pre class="scrollbar"></pre>
                 </div>
             </section>
         </div>

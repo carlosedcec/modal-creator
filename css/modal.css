@@ -24,23 +24,6 @@
     opacity: 1;
 }
 
-/* Open Button */
-
-.modal-open-button {
-    background: linear-gradient(to top, #ddd, #fff);
-    color: var(--color1);
-    border: 1px solid var(--color1);
-    padding: 16px 28px;
-    border-radius: 6px;
-    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.3);
-    text-transform: uppercase;
-    font-weight: bold;
-    font-family: "Poppins";
-    cursor: pointer;
-    position: absolute;
-}
-
-
 /* Modal */
 
 .modal {

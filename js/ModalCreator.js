@@ -9,8 +9,20 @@ class ModalCreator {
         this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
 
         this.form = document.querySelector(form);
+
         this.changeModalPreviewMethods = {};
-        this.modalProperties = {};
+        this.modalProperties = {
+            width: 200,
+            height: 200,
+            backgroundColor: "#fff",
+            backdropColor: "rgba(0, 0, 0, 0.3)",
+            title: "Title",
+            textColor: "#26353e",
+            okButton: "default",
+            okButtonColor: "#447797",
+            closingButton: "topbottom",
+            closingButtonColor: "#bd4040"
+        };
 
     }
 
@@ -26,6 +38,17 @@ class ModalCreator {
             g: parseInt(result[2], 16),
             b: parseInt(result[3], 16)
         } : null;
+    }
+
+    #configModalProperty(property, value) {
+
+        if (property === "backdropColor") {
+            const rgb = this.#hexToRgb(value);
+            return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`;
+        }
+
+        return value;
+
     }
 
     addEventListeners() {
@@ -53,7 +76,7 @@ class ModalCreator {
         }
 
         // Save property
-        this.modalProperties[property] = value;
+        this.modalProperties[property] = this.#configModalProperty(property, value);
 
     }
 
@@ -73,7 +96,7 @@ class ModalCreator {
             },
             backdropColor(backdropColor) {
                 const rgb = hexToRgb(backdropColor);
-                this.backdropElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`
+                this.containerElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`;
             },
             title(title) {
                 this.modalElement.getElementsByTagName("h3")[0].innerHTML = title;
