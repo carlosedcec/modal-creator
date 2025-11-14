@@ -27,6 +27,7 @@ class Modal {
             this.closeModal();
         if (this.options.enterKey && event.key === "Enter")
             this.closeModal();
+        event.stopPropagation();
     }
 
     addEventListeners() {

@@ -1,21 +1,19 @@
 class ModalCodeGenerator {
 
     static generateModalHTML(config) {
+        console.log(config);
         return `
 <button id="openModalButton" class="modal-open-button">Open Modal</button>
 
 <div id="modalElement" class="modal-container closed" data-open="false">
     <div class="modal">
         <header class="modal-header">
-            <h3>${config.title}</h3>
-            ${config.closeButton === "topbottom" || "top" ? '<button class="modal-close"></button>' : ""}
+            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close"></button>' : ""}
         </header>
         <section class="modal-body">
             Lorem Ipsum
         </section>
-        <footer class="modal-footer">
-            ${config.cancelButton === "topbottom" || "bottom" ? '<button class="modal-cancel">Cancel</button>' : ""}
-            ${config.okButton === "default" ? '<button class="modal-ok">Ok</button>' : ""}
+        <footer class="modal-footer">${config.closingButton === "topbottom" || config.closingButton === "bottom" ? '\n            <button class="modal-cancel">Cancel</button>' : ""}${config.okButton === "default" ? '\n            <button class="modal-ok">Ok</button>' : ""}
         </footer>
     </div>
 </div>
@@ -145,20 +143,24 @@ class ModalCodeGenerator {
     }
 
     static generateModalJS(config) {
+
+        let buttons = "";
+        if (config.okButton === "default")
+            buttons += '\n        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok")';
+        if (config.closingButton === "topbottom" || config.closingButton === "top")
+            buttons += '\n        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close")';
+        if (config.closingButton === "topbottom" || config.closingButton === "bottom")
+            buttons += '\n        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel")';
+
         return `
 class Modal {
 
     constructor(modalContainer, openButton, options = {}) {
 
-        this.options = { okButton: true, cancelButton: true, closeButton: true, escKey: true, enterKey: true, ...options };
-
         this.openButtonElement = document.querySelector(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-
-        this.okButtonElement = this.options.okButton ? document.querySelector(modalContainer + " .modal-ok") : undefined;
-        this.cancelButtonElement = this.options.cancelButton ? document.querySelector(modalContainer + " .modal-cancel") : undefined;
-        this.closeButtonElement = this.options.closeButton ? document.querySelector(modalContainer + " .modal-close") : undefined;
+        ${buttons}
 
         this.init();
 
