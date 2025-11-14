@@ -22,7 +22,7 @@ p {
 }
 
 main {
-    background: linear-gradient(to top, #ddd, #eee);
+    background: #fff;
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 40px;
@@ -59,6 +59,60 @@ main {
     justify-content: center;
     grid-row: 1;
     grid-column: 2;
+    border-radius: 4px;
+}
+
+#modalCode .modal {
+    width: 84vw;
+    max-width: 1200px;
+}
+
+#modalCode .modal-body {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(320px, 360px));
+    gap: 20px;
+    overflow-x: auto;
+}
+
+#modalCode .modal-body .code {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+}
+
+#modalCode .modal-body h3 {
+    display: flex;
+    justify-content: space-between;
+}
+
+#modalCode .modal-body h3 .button-copy {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    background: #fff;
+    border-radius: 4px;
+}
+
+
+#modalCode .modal-body h3 .button-copy:hover {
+    background: #fafafa;
+}
+
+#modalCode .modal-body .code pre:hover + .button-copy {
+    opacity: 1;
+}
+
+#modalCode .modal-body pre {
+    height: 100%;
+    max-height: 440px;
+    background: #eee;
+    font-size: 0.85rem;
+    padding: 20px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    overflow: auto;
 }
 
 button#generateCode {

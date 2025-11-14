@@ -18,6 +18,7 @@ class Modal {
 
         const openButtons = [this.openButtonElement];
         openButtons.forEach((item) => {
+            if (!item) return;
             item.addEventListener("click", (event) => {
                 this.openModal(item, event);
             });
@@ -25,6 +26,7 @@ class Modal {
 
         const closeButtons = [this.cancelButtonElement, this.closeButtonElement];
         closeButtons.forEach((item) => {
+            if (!item) return;
             item.addEventListener("click", (event) => {
                 this.closeModal(item, event);
             });

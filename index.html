@@ -117,19 +117,37 @@
 
     <article id="modalCode" class="modal-container" data-open="false">
         <div class="modal">
-            <header class="modal-header">Code</header>
             <section class="modal-body">
-                <pre>code here</pre>
+                <button class="modal-close"></button>
+                <div class="code code-html">
+                    <h3>
+                        HTML
+                        <button class="button-copy">Copy</button>
+                    </h3>
+                    <pre>Asda
+                        sasdas</pre>
+                </div>
+                <div class="code code-css">
+                    <h3>
+                        CSS
+                        <button class="button-copy">Copy</button>
+                    </h3>
+                    <pre>css</pre>
+                </div>
+                <div class="code code-js">
+                    <h3>
+                        JavaScript
+                        <button class="button-copy">Copy</button>
+                    </h3>
+                    <pre>dasd</pre>
+                </div>
             </section>
-            <footer class="modal-footer">
-                <button class="modal-cancel">Cancel</button>
-                <button class="modal-ok">Ok</button>
-            </footer>
         </div>
     </article>
 
-    <script src="./js/ModalCreator.js"></script>
     <script src="./js/Modal.js"></script>
+    <script src="./js/ModalCreator.js"></script>
+    <script src="./js/ModalCodeGenerator.js"></script>
     <script src="./script.js"></script>
 
 </body>
