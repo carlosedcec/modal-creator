@@ -2,7 +2,9 @@ class ModalCodeGenerator {
 
     static generateModalHTML(config) {
         return `
-<div class="modal-container closed" data-open="false">
+<button id="openModalButton" class="modal-open-button">Open Modal</button>
+
+<div id="modalElement" class="modal-container closed" data-open="false">
     <div class="modal">
         <header class="modal-header">
             <h3>${config.title}</h3>
@@ -124,6 +126,21 @@ class ModalCodeGenerator {
 .modal-footer .modal-ok:hover {
     background-color: #265470;
 }
+
+/* Open Modal Button */
+
+.open-modal-button {
+    background: linear-gradient(to top, #ddd, #fff);
+    color: #333;
+    border: 1px solid #333;
+    padding: 16px 28px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+}
         `.trim();
     }
 
@@ -131,14 +148,20 @@ class ModalCodeGenerator {
         return `
 class Modal {
 
-    constructor(modalContainer, openButton) {
-        this.openButtonElement = document.querySelector(openButton);
+    constructor(modalContainer, openButton, options = {}) {
+
+        this.options = { okButton: true, cancelButton: true, closeButton: true, escKey: true, enterKey: true, ...options };
+
+        this.openButtonElement = document.querySelector(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
-        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
-        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
+
+        this.okButtonElement = this.options.okButton ? document.querySelector(modalContainer + " .modal-ok") : undefined;
+        this.cancelButtonElement = this.options.cancelButton ? document.querySelector(modalContainer + " .modal-cancel") : undefined;
+        this.closeButtonElement = this.options.closeButton ? document.querySelector(modalContainer + " .modal-close") : undefined;
+
         this.init();
+
     }
 
     init() {
@@ -151,7 +174,7 @@ class Modal {
         openButtons.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
-                this.openModal(item, event);
+                this.openModal();
             });
         });
 
@@ -159,8 +182,15 @@ class Modal {
         closeButtons.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
-                this.closeModal(item, event);
+                this.closeModal();
             });
+        });
+
+        document.addEventListener("keyup", (event) => {
+            if (this.options.escKey && event.key === "Escape")
+                this.closeModal();
+            if (this.options.enterKey && event.key === "Enter")
+                this.closeModal();
         });
 
     }
@@ -181,7 +211,7 @@ class Modal {
 
 }
 
-const modal = new Modal(<modal-container-element>, <open-modal-button>);
+const modal = new Modal("#modalElement", "#openModalButton");
         `.trim();
     }
 

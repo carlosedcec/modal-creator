@@ -71,6 +71,20 @@
                 <label class="input-group-label" for="modalClosingButtonColor">Closing Color</label>
                 <input class="input-group-item" type="color" name="modalClosingButtonColor" id="modalClosingButtonColor" value="#bd4040">
             </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalEnterKey">Enter Key</label>
+                <select class="input-group-item" name="modalEnterKey" id="modalEnterKey">
+                    <option value="true">Submit on Enter</option>
+                    <option value="false">Do nothing</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-label" for="modalEscapeKey">Escape Key</label>
+                <select class="input-group-item" name="modalEscapeKey" id="modalEscapeKey">
+                    <option value="true">Close on Esc</option>
+                    <option value="false">Do nothing</option>
+                </select>
+            </div>
             <!-- <div class="input-group">
                 <label class="input-group-label" for="modalAnimation">Animation</label>
                 <select class="input-group-item" name="modalAnimation" id="modalAnimation">
@@ -108,7 +122,7 @@
         </div>
 
         <div id="modalPreviewBackground">
-            <button id="openModalPreview">Open Modal</button>
+            <button id="openModalPreview" class="open-modal-button">Open Modal</button>
         </div>
 
         <button id="generateCode">Generate Code <img src="./img/chemistry-icon-blue.svg"></button>

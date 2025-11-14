@@ -5,7 +5,7 @@ const modalCode = new Modal("#modalCode", "#generateCode");
 
 // Modal Creator
 
-const modalCreator = new ModalCreator("#modalPreview", "#modalForm");
+const modalCreator = new ModalCreator("#modalPreview", "#modalForm", modalPreview);
 modalCreator.init();
 
 // Generate Code

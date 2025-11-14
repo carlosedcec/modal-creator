@@ -1,7 +1,8 @@
 class ModalCreator {
 
-    constructor(modalContainer, form) {
+    constructor(modalContainer, form, modalPreview) {
 
+        this.modalPreview = modalPreview;
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
@@ -124,6 +125,12 @@ class ModalCreator {
                 this.cancelButtonElement.style.backgroundColor = color;
                 this.closeButtonElement.style.backgroundColor = color;
             },
+            enterKey(value) {
+                this.modalPreview.reconfigKeysEvents({ enterKey: (value === "true") });
+            },
+            escapeKey(value) {
+                this.modalPreview.reconfigKeysEvents({ escKey: (value === "true") });
+            }
         };
 
     }

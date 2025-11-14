@@ -1,17 +1,32 @@
 class Modal {
 
-    constructor(modalContainer, openButton) {
-        this.openButtonElement = document.querySelector(openButton);
+    constructor(modalContainer, openButton, options = {}) {
+
+        this.options = { okButton: true, cancelButton: true, closeButton: true, escKey: true, enterKey: true, ...options };
+
+        this.openButtonElement = document.querySelector(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
-        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
-        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
+
+        this.okButtonElement = this.options.okButton ? document.querySelector(modalContainer + " .modal-ok") : undefined;
+        this.cancelButtonElement = this.options.cancelButton ? document.querySelector(modalContainer + " .modal-cancel") : undefined;
+        this.closeButtonElement = this.options.closeButton ? document.querySelector(modalContainer + " .modal-close") : undefined;
+
+        this.keyHandler = this.keyHandler.bind(this);
+
         this.init();
+
     }
 
     init() {
         this.addEventListeners();
+    }
+
+    keyHandler(event) {
+        if (this.options.escKey && event.key === "Escape")
+            this.closeModal();
+        if (this.options.enterKey && event.key === "Enter")
+            this.closeModal();
     }
 
     addEventListeners() {
@@ -20,7 +35,7 @@ class Modal {
         openButtons.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
-                this.openModal(item, event);
+                this.openModal();
             });
         });
 
@@ -28,9 +43,11 @@ class Modal {
         closeButtons.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
-                this.closeModal(item, event);
+                this.closeModal();
             });
         });
+
+        document.addEventListener("keyup", this.keyHandler);
 
     }
 
@@ -46,6 +63,12 @@ class Modal {
         this.containerElement.classList.add("closed");
         this.containerElement.classList.remove("open");
         setTimeout(() => this.containerElement.dataset.open = "false", 300);
+    }
+
+    reconfigKeysEvents(newOptions) {
+        this.options = { ...this.options, ...newOptions };
+        document.removeEventListener("keyup", this.keyHandler);
+        document.addEventListener("keyup", this.keyHandler);
     }
 
 }
