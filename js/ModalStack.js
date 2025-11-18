@@ -1,5 +1,0 @@
-class ModalStack {
-
-    static openModalsLIFOStack = [];
-    
-}
