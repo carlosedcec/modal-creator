@@ -1,9 +1,8 @@
 class ModalCodeGenerator {
 
     static generateModalHTML(config) {
-        console.log(config);
         return `
-<button id="openModalButton" class="modal-open-button">Open Modal</button>
+<button class="modal-open-button">Open Modal</button>
 
 <div id="modalElement" class="modal-container closed" data-open="false">
     <div class="modal">
@@ -152,49 +151,87 @@ class ModalCodeGenerator {
         if (config.closingButton === "topbottom" || config.closingButton === "bottom")
             buttons += '\n        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel")';
 
-        return `
-class Modal {
+        let closeButtons = "";
 
-    constructor(modalContainer, openButton, options = {}) {
+        if (config.closingButton !== "none") {
 
-        this.openButtonElement = document.querySelector(openButton);        
-        this.containerElement = document.querySelector(modalContainer);
-        this.modalElement = document.querySelector(modalContainer + " .modal");
-        ${buttons}
+            let closeButtonsArray = [];
+            if (config.closingButton === "topbottom" || config.closeButtons === "top");
+                closeButtonsArray.push("this.closeButtonElement");
+            if (config.closingButton === "topbottom" || config.closeButtons === "bottom");
+                closeButtonsArray.push("this.cancelButtonElement");
 
-        this.init();
+            closeButtonsArray = "[" + closeButtonsArray.toString() + "]";
 
-    }
-
-    init() {
-        this.addEventListeners();
-    }
-
-    addEventListeners() {
-
-        const openButtons = [this.openButtonElement];
-        openButtons.forEach((item) => {
-            if (!item) return;
-            item.addEventListener("click", (event) => {
-                this.openModal();
-            });
-        });
-
-        const closeButtons = [this.cancelButtonElement, this.closeButtonElement];
+            closeButtons = `
+        const closeButtons = ${closeButtonsArray};
         closeButtons.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
                 this.closeModal();
             });
         });
+            `;
 
-        document.addEventListener("keyup", (event) => {
+        }
+
+        let eventsKey = "";
+
+        if (config.enterKey || config.escKey) {
+
+            let events = "";
+            if (config.escKey) {
+                events += `
             if (this.options.escKey && event.key === "Escape")
-                this.closeModal();
+                this.closeModal();`;
+            }
+            if (config.enterKey) {
+                events += `
             if (this.options.enterKey && event.key === "Enter")
-                this.closeModal();
-        });
+                this.closeModal();`;
+            }
 
+            eventsKey = `
+        document.addEventListener("keyup", (event) => {${events}
+        });
+            `;
+
+        }
+
+        return `
+class ModalStack {
+
+    static openModalsLIFOStack = [];
+    
+}
+
+class Modal {
+
+    constructor(modalContainer, openButton, options = {}) {
+
+        this.openButtonElements = document.querySelectorAll(openButton);        
+        this.containerElement = document.querySelector(modalContainer);
+        this.modalElement = document.querySelector(modalContainer + " .modal");
+        ${buttons}
+
+        this.#init();
+
+    }
+
+    #init() {
+        this.addEventListeners();
+    }
+
+    #addEventListeners() {
+
+        this.openButtonElements.forEach((item) => {
+            if (!item) return;
+            item.addEventListener("click", (event) => {
+                this.openModal();
+            });
+        });
+        ${closeButtons}
+        ${eventsKey}
     }
 
     openModal() {
@@ -203,17 +240,22 @@ class Modal {
             this.containerElement.classList.add("open");
             this.containerElement.classList.remove("closed")
         }, 50);
+        ModalStack.openModalsLIFOStack.push(this.containerElement);
     }
 
     closeModal() {
-        this.containerElement.classList.add("closed");
-        this.containerElement.classList.remove("open");
-        setTimeout(() => this.containerElement.dataset.open = "false", 300);
+        const currentModal = ModalStack.openModalsLIFOStack[ModalStack.openModalsLIFOStack.length - 1];
+        if (currentModal === this.containerElement) {
+            this.containerElement.classList.add("closed");
+            this.containerElement.classList.remove("open");
+            setTimeout(() => this.containerElement.dataset.open = "false", 300);
+            ModalStack.openModalsLIFOStack.pop(this.containerElement);
+        }
     }
 
 }
 
-const modal = new Modal("#modalElement", "#openModalButton");
+const modal = new Modal("#modalElement", ".modal-open-button");
         `.trim();
     }
 

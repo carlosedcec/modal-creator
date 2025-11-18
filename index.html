@@ -79,8 +79,8 @@
                 </select>
             </div>
             <div class="input-group">
-                <label class="input-group-label" for="modalEscapeKey">Escape Key</label>
-                <select class="input-group-item" name="modalEscapeKey" id="modalEscapeKey">
+                <label class="input-group-label" for="modalEscKey">Escape Key</label>
+                <select class="input-group-item" name="modalEscKey" id="modalEscKey">
                     <option value="true">Close on Esc</option>
                     <option value="false">Do nothing</option>
                 </select>
@@ -105,7 +105,7 @@
             </div> -->
         </form>
 
-        <div id="modalPreview" class="modal-container open scrollbar" data-open="true">
+        <div id="modalPreview" class="modal-container closed scrollbar" data-open="false">
             <div class="modal">
                 <header class="modal-header">
                     <h3>Title</h3>
@@ -158,6 +158,7 @@
         </div>
     </article>
 
+    <script src="./js/ModalStack.js"></script>
     <script src="./js/Modal.js"></script>
     <script src="./js/ModalCreator.js"></script>
     <script src="./js/ModalCodeGenerator.js"></script>

@@ -22,7 +22,9 @@ class ModalCreator {
             okButton: "default",
             okButtonColor: "#447797",
             closingButton: "topbottom",
-            closingButtonColor: "#bd4040"
+            closingButtonColor: "#bd4040",
+            enterKey: true,
+            escKey: true
         };
 
     }
@@ -46,6 +48,10 @@ class ModalCreator {
         if (property === "backdropColor") {
             const rgb = this.#hexToRgb(value);
             return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`;
+        }
+
+        if (property === "enterKey" || property === "escKey") {
+            return (value === "true");
         }
 
         return value;
@@ -128,7 +134,7 @@ class ModalCreator {
             enterKey(value) {
                 this.modalPreview.reconfigKeysEvents({ enterKey: (value === "true") });
             },
-            escapeKey(value) {
+            escKey(value) {
                 this.modalPreview.reconfigKeysEvents({ escKey: (value === "true") });
             }
         };

@@ -4,7 +4,7 @@ class Modal {
 
         this.options = { okButton: true, cancelButton: true, closeButton: true, escKey: true, enterKey: true, ...options };
 
-        this.openButtonElement = document.querySelector(openButton);        
+        this.openButtonElements = document.querySelectorAll(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
 
@@ -12,28 +12,17 @@ class Modal {
         this.cancelButtonElement = this.options.cancelButton ? document.querySelector(modalContainer + " .modal-cancel") : undefined;
         this.closeButtonElement = this.options.closeButton ? document.querySelector(modalContainer + " .modal-close") : undefined;
 
-        this.keyHandler = this.keyHandler.bind(this);
-
-        this.init();
+        this.#init();
 
     }
 
-    init() {
-        this.addEventListeners();
+    #init() {
+        this.#addEventListeners();
     }
 
-    keyHandler(event) {
-        if (this.options.escKey && event.key === "Escape")
-            this.closeModal();
-        if (this.options.enterKey && event.key === "Enter")
-            this.closeModal();
-        event.stopPropagation();
-    }
+    #addEventListeners() {
 
-    addEventListeners() {
-
-        const openButtons = [this.openButtonElement];
-        openButtons.forEach((item) => {
+        this.openButtonElements.forEach((item) => {
             if (!item) return;
             item.addEventListener("click", (event) => {
                 this.openModal();
@@ -48,7 +37,12 @@ class Modal {
             });
         });
 
-        document.addEventListener("keyup", this.keyHandler);
+        document.addEventListener("keyup", (event) => {
+            if (this.options.escKey && event.key === "Escape")
+                this.closeModal();
+            if (this.options.enterKey && event.key === "Enter")
+                this.closeModal();
+        });
 
     }
 
@@ -58,12 +52,17 @@ class Modal {
             this.containerElement.classList.add("open");
             this.containerElement.classList.remove("closed")
         }, 50);
+        ModalStack.openModalsLIFOStack.push(this.containerElement);
     }
 
     closeModal() {
-        this.containerElement.classList.add("closed");
-        this.containerElement.classList.remove("open");
-        setTimeout(() => this.containerElement.dataset.open = "false", 300);
+        const currentModal = ModalStack.openModalsLIFOStack[ModalStack.openModalsLIFOStack.length - 1];
+        if (currentModal === this.containerElement) {
+            this.containerElement.classList.add("closed");
+            this.containerElement.classList.remove("open");
+            setTimeout(() => this.containerElement.dataset.open = "false", 300);
+            ModalStack.openModalsLIFOStack.pop(this.containerElement);
+        }
     }
 
     reconfigKeysEvents(newOptions) {
