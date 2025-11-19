@@ -199,13 +199,9 @@ class ModalCodeGenerator {
         }
 
         return `
-class ModalStack {
-
-    static openModalsLIFOStack = [];
-    
-}
-
 class Modal {
+
+    static activeModalLIFOStack = [];
 
     constructor(modalContainer, openButton, options = {}) {
 
@@ -240,16 +236,16 @@ class Modal {
             this.containerElement.classList.add("open");
             this.containerElement.classList.remove("closed")
         }, 50);
-        ModalStack.openModalsLIFOStack.push(this.containerElement);
+        Modal.activeModalLIFOStack.push(this.containerElement);
     }
 
     closeModal() {
-        const currentModal = ModalStack.openModalsLIFOStack[ModalStack.openModalsLIFOStack.length - 1];
+        const currentModal = Modal.activeModalLIFOStack[Modal.activeModalLIFOStack.length - 1];
         if (currentModal === this.containerElement) {
             this.containerElement.classList.add("closed");
             this.containerElement.classList.remove("open");
             setTimeout(() => this.containerElement.dataset.open = "false", 300);
-            ModalStack.openModalsLIFOStack.pop(this.containerElement);
+            Modal.activeModalLIFOStack.pop(this.containerElement);
         }
     }
 
