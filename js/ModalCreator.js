@@ -91,6 +91,32 @@ class ModalCreator {
 
         const hexToRgb = (hex) => this.#hexToRgb(hex);
 
+        const getHoverColor = function(rgbColor) {
+            function createHoverColor(originalColor, bias) {
+                const newColor = originalColor - bias;
+                return newColor > 0 ? newColor : (newColor + 15) > 0 ? (newColor + 15) : 0; 
+            };
+            return {
+                r: createHoverColor(rgbColor.r, 30),
+                g: createHoverColor(rgbColor.g, 42),
+                b: createHoverColor(rgbColor.b, 42)
+            }
+        };
+
+        const configHoverColor = function(color, elementSelector) {
+
+            let style = document.querySelector("head > style");
+
+            if (!style) {
+                style = document.createElement('style');
+                document.querySelector('head').appendChild(style);
+            }
+
+            const css = `${elementSelector}:hover { background-color: rgba(${color.r}, ${color.g}, ${color.b}) !important; }`;
+            style.innerHTML += css;
+
+        };
+
         this.changeModalPreviewMethods = {
             width(width) {
                 this.modalElement.style.width = width + "px";
@@ -120,6 +146,8 @@ class ModalCreator {
             },
             okButtonColor(color) {
                 this.okButtonElement.style.backgroundColor = color;
+                const rgbHoverColor = getHoverColor(hexToRgb(color));
+                configHoverColor(rgbHoverColor, ".modal-footer .modal-ok");
             },
             closingButton(value) {
                 const closeButtonDisplay = (value === "topbottom" || value === "top") ? "block" : "none";
@@ -130,6 +158,9 @@ class ModalCreator {
             closingButtonColor(color) {
                 this.cancelButtonElement.style.backgroundColor = color;
                 this.closeButtonElement.style.backgroundColor = color;
+                const rgbHoverColor = getHoverColor(hexToRgb(color));
+                configHoverColor(rgbHoverColor, ".modal-header .modal-close");
+                configHoverColor(rgbHoverColor, ".modal-footer .modal-cancel");
             },
             enterKey(value) {
                 this.modalPreview.reconfigKeysEvents({ enterKey: (value === "true") });

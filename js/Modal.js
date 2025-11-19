@@ -1,6 +1,6 @@
 class Modal {
 
-    static activeModalLIFOStack = [];
+    static activeModalsLIFOStack = [];
 
     constructor(modalContainer, openButton, options = {}) {
 
@@ -48,22 +48,25 @@ class Modal {
 
     }
 
+    getCurrentActiveModal() {
+        return Modal.activeModalsLIFOStack[Modal.activeModalsLIFOStack.length - 1];
+    }
+
     openModal() {
         this.containerElement.dataset.open = "true";
+        Modal.activeModalsLIFOStack.push(this.containerElement);
         setTimeout(() => {
             this.containerElement.classList.add("open");
             this.containerElement.classList.remove("closed")
         }, 50);
-        Modal.activeModalLIFOStack.push(this.containerElement);
     }
 
     closeModal() {
-        const currentModal = Modal.activeModalLIFOStack[Modal.activeModalLIFOStack.length - 1];
-        if (currentModal === this.containerElement) {
+        if (this.getCurrentActiveModal() === this.containerElement) {
             this.containerElement.classList.add("closed");
             this.containerElement.classList.remove("open");
+            Modal.activeModalsLIFOStack.pop(this.containerElement);
             setTimeout(() => this.containerElement.dataset.open = "false", 300);
-            Modal.activeModalLIFOStack.pop(this.containerElement);
         }
     }
 
