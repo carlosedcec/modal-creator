@@ -76,20 +76,23 @@ class ModalCodeGenerator {
 .modal-header .modal-close {
     width: 36px;
     height: 36px;
+    color: ${config.closingButtonTextColor};
     background-color: ${config.closingButtonColor};
-    background-image: url("../img/fechar.svg");
-    background-position: center center;
-    background-repeat: no-repeat;
+    font-family: cursive;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 12px 12px 12px;
+    border-radius: 50%;
     position: absolute;
     top: -16px;
     right: -16px;
-    border-radius: 50%;
 }
 .modal-header .modal-close:active {
     background-position: 10px 10px;
 }
 .modal-header .modal-close:hover {
-    background-color: rgb(156, 41, 41);
+    background-color: ${config.closingButtonHoverColor};
 }
 
 /* Modal Body */
@@ -107,21 +110,22 @@ class ModalCodeGenerator {
     justify-content: center;
 }
 .modal-footer button {
-    color: white;
     padding: 12px 20px;
     border-radius: 4px;
 }
 .modal-footer .modal-cancel {
+    color: ${config.closingButtonTextColor};
     background-color: ${config.closingButtonColor};
 }
 .modal-footer .modal-cancel:hover {
-    background-color: #9c2929;
+    background-color: ${config.closingButtonHoverColor};
 }
 .modal-footer .modal-ok {
+    color: ${config.okButtonTextColor};
     background-color: ${config.okButtonColor};
 }
 .modal-footer .modal-ok:hover {
-    background-color: #265470;
+    background-color: ${config.okButtonHoverColor};
 }
 
 /* Open Modal Button */

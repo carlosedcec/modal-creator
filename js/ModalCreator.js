@@ -21,8 +21,12 @@ class ModalCreator {
             textColor: "#26353e",
             okButton: "default",
             okButtonColor: "#447797",
+            okButtonHoverColor: "#265470",
+            okButtonTextColor: "#fff",
             closingButton: "topbottom",
             closingButtonColor: "#bd4040",
+            closingButtonHoverColor: "#9c2929",
+            closingButtonTextColor: "#fff",
             enterKey: true,
             escKey: true
         };
@@ -41,6 +45,14 @@ class ModalCreator {
             g: parseInt(result[2], 16),
             b: parseInt(result[3], 16)
         } : null;
+    }
+
+    #rgbToHex(rgb) {
+        function componentToHex(c) {
+            var hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
+        return "#" + componentToHex(rgb.r) + componentToHex(rgb.g) + componentToHex(rgb.b);
     }
 
     #configModalProperty(property, value) {
@@ -90,8 +102,9 @@ class ModalCreator {
     configModalPreviewMethods() {
 
         const hexToRgb = (hex) => this.#hexToRgb(hex);
+        const rgbToHex = (hex) => this.#rgbToHex(hex);
 
-        const getHoverColor = function(rgbColor) {
+        function getHoverColor(rgbColor) {
             function createHoverColor(originalColor, bias) {
                 const newColor = originalColor - bias;
                 return newColor > 0 ? newColor : (newColor + 15) > 0 ? (newColor + 15) : 0; 
@@ -103,7 +116,7 @@ class ModalCreator {
             }
         };
 
-        const configHoverColor = function(color, elementSelector) {
+        function configHoverColorCSS(color, elementSelector) {
 
             let style = document.querySelector("head > style");
 
@@ -115,6 +128,11 @@ class ModalCreator {
             const css = `${elementSelector}:hover { background-color: rgba(${color.r}, ${color.g}, ${color.b}) !important; }`;
             style.innerHTML += css;
 
+        };
+
+        function getTextColor(bgColor) {
+            const brightness = ((bgColor.r * 299) + (bgColor.g * 587) + (bgColor.b * 114)) / 1000;
+            return (brightness < 128) ? "#fff" : "#000";
         };
 
         this.changeModalPreviewMethods = {
@@ -145,9 +163,17 @@ class ModalCreator {
                 }
             },
             okButtonColor(color) {
+
                 this.okButtonElement.style.backgroundColor = color;
+
                 const rgbHoverColor = getHoverColor(hexToRgb(color));
-                configHoverColor(rgbHoverColor, ".modal-footer .modal-ok");
+                configHoverColorCSS(rgbHoverColor, ".modal-footer .modal-ok");
+                this.modalProperties.okButtonHoverColor = rgbToHex(rgbHoverColor);
+
+                const textColor = getTextColor(hexToRgb(color));
+                this.okButtonElement.style.color = textColor;
+                this.modalProperties.okButtonTextColor = textColor;
+
             },
             closingButton(value) {
                 const closeButtonDisplay = (value === "topbottom" || value === "top") ? "block" : "none";
@@ -156,11 +182,20 @@ class ModalCreator {
                 this.cancelButtonElement.style.display = cancelButtonDisplay;
             },
             closingButtonColor(color) {
+
                 this.cancelButtonElement.style.backgroundColor = color;
                 this.closeButtonElement.style.backgroundColor = color;
+
                 const rgbHoverColor = getHoverColor(hexToRgb(color));
-                configHoverColor(rgbHoverColor, ".modal-header .modal-close");
-                configHoverColor(rgbHoverColor, ".modal-footer .modal-cancel");
+                configHoverColorCSS(rgbHoverColor, ".modal-header .modal-close");
+                configHoverColorCSS(rgbHoverColor, ".modal-footer .modal-cancel");
+                this.modalProperties.closingButtonHoverColor = rgbToHex(rgbHoverColor);
+
+                const textColor = getTextColor(hexToRgb(color));
+                this.cancelButtonElement.style.color = textColor;
+                this.closeButtonElement.style.color = textColor;
+                this.modalProperties.closingButtonTextColor = textColor;
+
             },
             enterKey(value) {
                 this.modalPreview.reconfigKeysEvents({ enterKey: (value === "true") });
