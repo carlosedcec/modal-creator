@@ -20,6 +20,78 @@ class ModalCodeGenerator {
     }
 
     static generateModalCSS(config) {
+
+        let modalHeaderClose = "";
+
+        if (config.closingButton !== "none") {
+            modalHeaderClose = `
+.modal-header .modal-close {
+    width: 36px;
+    height: 36px;
+    color: ${config.closingButtonTextColor};
+    background-color: ${config.closingButtonColor};
+    font-weight: bold;
+    text-align: center;
+    padding-top: 2px;
+    padding-right: 7px;
+    border-radius: 50%;
+    position: absolute;
+    top: -16px;
+    right: -16px;
+}
+.modal-header .modal-close:active {
+    background-position: 10px 10px;
+}
+.modal-header .modal-close:hover {
+    background-color: ${config.closingButtonHoverColor};
+}`;
+        }
+
+        let modalFooter = "";
+
+        if (config.okButton !== "none" || (config.closingButton === "topbottom" || config.closingButton === "bottom")) {
+            modalFooter = `
+/* Modal Footer */
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+.modal-footer button {
+    padding: 12px 20px;
+    border-radius: 4px;
+}`;
+        }
+
+        let modalFooterCancel = "";
+
+        if (config.closingButton === "topbottom" || config.closingButton === "bottom") {
+            modalFooterCancel = `
+.modal-footer .modal-cancel {
+    color: ${config.closingButtonTextColor};
+    background-color: ${config.closingButtonColor};
+}
+.modal-footer .modal-cancel:hover {
+    background-color: ${config.closingButtonHoverColor};
+}`;
+        }
+
+        let modalFooterOk = "";
+
+        if (config.okButton !== "none") {
+            modalFooterOk = `
+.modal-footer .modal-ok {
+    color: ${config.okButtonTextColor};
+    background-color: ${config.okButtonColor};
+}
+.modal-footer .modal-ok:hover {
+    background-color: ${config.okButtonHoverColor};
+}
+`;
+        }
+
         return `
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");    
 
@@ -74,29 +146,7 @@ class ModalCodeGenerator {
     padding: 20px;
     border-bottom: 1px solid #ccc;
     position: relative;
-}
-.modal-body .modal-close,
-.modal-header .modal-close {
-    width: 36px;
-    height: 36px;
-    color: ${config.closingButtonTextColor};
-    background-color: ${config.closingButtonColor};
-    font-family: cursive;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    padding: 6px 12px 12px 12px;
-    border-radius: 50%;
-    position: absolute;
-    top: -16px;
-    right: -16px;
-}
-.modal-header .modal-close:active {
-    background-position: 10px 10px;
-}
-.modal-header .modal-close:hover {
-    background-color: ${config.closingButtonHoverColor};
-}
+}${modalHeaderClose}
 .modal-header h3 {
     margin: 0px;
 }
@@ -106,54 +156,23 @@ class ModalCodeGenerator {
     padding: 20px;
     flex: 1;
 }
-
-/* Modal Footer */
-.modal-footer {
-    padding: 20px;
-    border-top: 1px solid #ccc;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-.modal-footer button {
-    padding: 12px 20px;
-    border-radius: 4px;
-}
-.modal-footer .modal-cancel {
-    color: ${config.closingButtonTextColor};
-    background-color: ${config.closingButtonColor};
-}
-.modal-footer .modal-cancel:hover {
-    background-color: ${config.closingButtonHoverColor};
-}
-.modal-footer .modal-ok {
-    color: ${config.okButtonTextColor};
-    background-color: ${config.okButtonColor};
-}
-.modal-footer .modal-ok:hover {
-    background-color: ${config.okButtonHoverColor};
-}
-
+${modalFooter}${modalFooterCancel}${modalFooterOk}
 /* Modal Buttons */
-
 .modal button {
     box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.3);
     transition: background-color .2s ease-in-out, transform 0s ease-in-out;
     cursor: pointer;
     border: none;
 }
-
 .modal button:focus-visible {
     outline: 2px solid var(--color1);
 }
-
 .modal button:active {
     transform: scale(0.97);
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 /* Open Modal Button */
-
 .open-modal-button {
     background: linear-gradient(to top, #ddd, #fff);
     color: #333;

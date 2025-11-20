@@ -126,7 +126,7 @@ main {
 @media (max-width: 900px) {
     #modalPreview,
     #modalPreviewBackground {
-        height: 80vh;
+        height: 68vh;
         grid-row: 2;
         grid-column: 1;
         background-size: cover;
