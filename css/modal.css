@@ -93,6 +93,13 @@
     background-color: #9c2929;
 }
 
+@media (max-width: 480px) {
+    .modal-body .modal-close,
+    .modal-header .modal-close {
+        padding: 8px 12px 12px 12px;
+    }
+}
+
 /* Modal Body */
 
 .modal-body {

@@ -38,10 +38,12 @@ class Modal {
         this.openButtonElements.forEach((item) => {
             item?.addEventListener("click", (event) => this.openModal(this.openCallback));
             item?.addEventListener("keydown", (event) => {
-                setTimeout(() => {
-                    event.target.blur();
-                    this.okButtonRefocus = event.target;
-                }, 100)
+                if (event.key === "Enter") {
+                    setTimeout(() => {
+                        event.target.blur();
+                        this.okButtonRefocus = event.target;
+                    }, 100);
+                }
             });
         });
 
@@ -89,8 +91,6 @@ class Modal {
         this.containerElement.dataset.open = "false"
 
         Modal.activeModalsLIFOStack.pop(this.containerElement);
-
-        console.log(this.okButtonRefocus);
 
         if (this.okButtonRefocus)
             setTimeout(() => this.okButtonRefocus.focus(), 100);
