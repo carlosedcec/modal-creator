@@ -2,12 +2,12 @@ class ModalCodeGenerator {
 
     static generateModalHTML(config) {
         return `
-<button class="modal-open-button">Open Modal</button>
+<button class="open-modal-button ">Open Modal</button>
 
 <div id="modalElement" class="modal-container closed" data-open="false">
     <div class="modal">
         <header class="modal-header">
-            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close"></button>' : ""}
+            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close">X</button>' : ""}
         </header>
         <section class="modal-body">
             Lorem Ipsum
@@ -21,19 +21,22 @@ class ModalCodeGenerator {
 
     static generateModalCSS(config) {
         return `
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");    
+
 /* Modal Container */
 .modal-container {
-    width: ${config.width + "px"};
-    height: ${config.height + "px"};
+    width: 100vw;
+    height: 100vh;
     background-color: ${config.backdropColor};
     backdrop-filter: blur(8px);
-    z-index: 1;
-    transition: all .3s ease-in-out;
+    font-family: "Poppins", "Verdana", sans-serif;
     position: fixed;
     top: 0px;
     left: 0px;
     display: none;
+    transition: all .3s ease-in-out;
     opacity: 0;
+    z-index: 1;
 }
 .modal-container[data-open="true"] {
     display: flex;
@@ -46,8 +49,8 @@ class ModalCodeGenerator {
 
 /* Modal */
 .modal {
-    min-width: 180px;
-    min-height: 220px;
+    width: ${config.width + "px"};
+    height: ${config.height + "px"};
     color: ${config.textColor};
     background-color: ${config.backgroundColor};
     border-radius: 4px;
@@ -94,6 +97,9 @@ class ModalCodeGenerator {
 .modal-header .modal-close:hover {
     background-color: ${config.closingButtonHoverColor};
 }
+.modal-header h3 {
+    margin: 0px;
+}
 
 /* Modal Body */
 .modal-body {
@@ -128,6 +134,24 @@ class ModalCodeGenerator {
     background-color: ${config.okButtonHoverColor};
 }
 
+/* Modal Buttons */
+
+.modal button {
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    transition: background-color .2s ease-in-out, transform 0s ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.modal button:focus-visible {
+    outline: 2px solid var(--color1);
+}
+
+.modal button:active {
+    transform: scale(0.97);
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
 /* Open Modal Button */
 
 .open-modal-button {
@@ -135,6 +159,7 @@ class ModalCodeGenerator {
     color: #333;
     border: 1px solid #333;
     padding: 16px 28px;
+    font-family: "Poppins", "Verdana", sans-serif;
     border-radius: 6px;
     box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
@@ -165,18 +190,21 @@ class ModalCodeGenerator {
             if (config.closingButton === "topbottom" || config.closeButtons === "bottom");
                 closeButtonsArray.push("this.cancelButtonElement");
 
-            closeButtonsArray = "[" + closeButtonsArray.toString() + "]";
+            closeButtonsArray = "[" + closeButtonsArray.toString().replaceAll(",", ", ") + "]";
 
             closeButtons = `
         const closeButtons = ${closeButtonsArray};
         closeButtons.forEach((item) => {
-            if (!item) return;
-            item.addEventListener("click", (event) => {
-                this.closeModal();
-            });
-        });
-            `;
+            item?.addEventListener("click", (event) => this.closeModal());
+        });`;
 
+        }
+
+        let okButton = "";
+
+        if (config.okButton !== "none") {
+            okButton = `
+        this.okButtonElement?.addEventListener("click", (event) => this.submitModal());`;
         }
 
         let eventsKey = "";
@@ -186,13 +214,13 @@ class ModalCodeGenerator {
             let events = "";
             if (config.escKey) {
                 events += `
-            if (this.options.escKey && event.key === "Escape")
-                this.closeModal();`;
+            if (event.key === "Escape") this.closeModal();`;
             }
             if (config.enterKey) {
                 events += `
-            if (this.options.enterKey && event.key === "Enter")
-                this.closeModal();`;
+            const isKeyPressedOnOpenButton = Array.from(this.openButtonElements).some(btn => 
+                btn && (btn === event.target || btn.contains(event.target)));
+            if (event.key === "Enter" && !isKeyPressedOnOpenButton) this.submitModal();`;
             }
 
             eventsKey = `
@@ -207,58 +235,92 @@ class Modal {
 
     static activeModalsLIFOStack = [];
 
-    constructor(modalContainer, openButton, options = {}) {
+    constructor(modalContainer, openButton, submitCallback) {
 
         this.openButtonElements = document.querySelectorAll(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
         ${buttons}
 
-        this.#init();
+        this.submitCallback = submitCallback;
 
-    }
+        this.#addEventListeners();
 
-    #init() {
-        this.addEventListeners();
     }
 
     #addEventListeners() {
 
         this.openButtonElements.forEach((item) => {
-            if (!item) return;
-            item.addEventListener("click", (event) => {
-                this.openModal();
+            item?.addEventListener("click", (event) => this.openModal(this.openCallback));
+            item?.addEventListener("keydown", (event) => {
+                setTimeout(() => {
+                    event.target.blur();
+                    this.okButtonRefocus = event.target;
+                }, 100)
             });
         });
         ${closeButtons}
+        ${okButton}
         ${eventsKey}
     }
 
-    getCurrentActiveModal() {
-        return Modal.activeModalsLIFOStack[Modal.activeModalsLIFOStack.length - 1];
+    isThisCurrentActiveModal() {
+        return (Modal.activeModalsLIFOStack[Modal.activeModalsLIFOStack.length - 1] === this.containerElement);
     }
 
-    openModal() {
-        this.containerElement.dataset.open = "true";
+    openModal(openCallback) {
+
+        this.containerElement.classList.add("open");
+        this.containerElement.classList.remove("closed");
+
+        this.openCallback = openCallback;
+        if (this.openCallback && typeof this.openCallback === "function") {
+            this.openCallback(this.containerElement);
+        }
+
         Modal.activeModalsLIFOStack.push(this.containerElement);
-        setTimeout(() => {
-            this.containerElement.classList.add("open");
-            this.containerElement.classList.remove("closed")
-        }, 50);
+
+        setTimeout(() => { this.containerElement.dataset.open = "true"; }, 50);
+
     }
 
     closeModal() {
-        if (this.getCurrentActiveModal() === this.containerElement) {
+
+        if (!this.isThisCurrentActiveModal())
+            return
+
+        this.containerElement.dataset.open = "false"
+
+        Modal.activeModalsLIFOStack.pop(this.containerElement);
+
+        console.log(this.okButtonRefocus);
+
+        if (this.okButtonRefocus)
+            setTimeout(() => this.okButtonRefocus.focus(), 100);
+
+        setTimeout(() => {
             this.containerElement.classList.add("closed");
             this.containerElement.classList.remove("open");
-            Modal.activeModalsLIFOStack.pop(this.containerElement);
-            setTimeout(() => this.containerElement.dataset.open = "false", 300);
-        }
+        }, 300);
+
+    }
+
+    submitModal() {
+
+        if (!this.isThisCurrentActiveModal())
+            return
+
+        if (this.submitCallback && typeof this.submitCallback === "function")    
+            this.submitCallback(this.containerElement);
+
+        this.closeModal();
+
     }
 
 }
 
-const modal = new Modal("#modalElement", ".modal-open-button");
+const modal = new Modal("#modalElement", ".open-modal-button"); // You can pass a callback function as a third argument to be executed on "ok button" (receive container modal element as parameter).
+modal.openModal(); // Remeber to open modal via javascript so it can be properly pushed into the internal class stack.
         `.trim();
     }
 

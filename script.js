@@ -1,9 +1,11 @@
 // Modals
 
 const modalPreview = new Modal("#modalPreview", "#openModalPreview");
-modalPreview.openModal();
+modalPreview.openModal(function(modal) {
+    console.log(modal);
+});
 
-const modalCode = new Modal("#modalCode", "#generateCode", { okButton: false, enterKey: false });
+const modalCode = new Modal("#modalCode", "#generateCode", {}, { okButton: false, enterKey: false });
 
 // Modal Creator
 

@@ -14,13 +14,13 @@
     opacity: 0;
 }
 
-.modal-container[data-open="true"] {
+.modal-container.open {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.modal-container.open {
+.modal-container[data-open="true"] {
     opacity: 1;
 }
 
@@ -56,11 +56,11 @@
     display: none;
 }
 
-.modal-container[data-open="true"] .modal {
+.modal-container.open .modal {
     display: flex;
 }
 
-.modal-container.open .modal {
+.modal-container[data-open="true"] .modal {
     transform: scale(1);
 }
 

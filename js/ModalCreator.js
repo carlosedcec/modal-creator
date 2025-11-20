@@ -13,8 +13,8 @@ class ModalCreator {
 
         this.changeModalPreviewMethods = {};
         this.modalProperties = {
-            width: 200,
-            height: 200,
+            width: 280,
+            height: 280,
             backgroundColor: "#fff",
             backdropColor: "rgba(0, 0, 0, 0.3)",
             title: "Title",
