@@ -1,31 +1,65 @@
 class ModalCodeGenerator {
 
     static generateModalHTML(config) {
+
+        function getHeaderHTML(config) {
+
+            let headerHTML = `
+        <button class="modal-close">X</button>`;
+
+            if (config.showHeader) {
+                headerHTML = `
+        <header class="modal-header">
+            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close">X</button>' : ""}
+        </header>`;
+            }
+
+            return headerHTML;
+        }
+
+        function getFooterHTML(config) {
+
+            let footerHTML = "";
+
+            if (config.showFooter) {
+                footerHTML = `
+        <footer class="modal-footer">${config.closingButton === "topbottom" || config.closingButton === "bottom" ? '\n            <button class="modal-cancel">Cancel</button>' : ""}${config.okButton === "default" ? '\n            <button class="modal-ok">Ok</button>' : ""}
+        </footer>`;
+            }
+
+            return footerHTML;
+
+        }
+
+        function getModalHTML() {
         return `
 <button class="open-modal-button ">Open Modal</button>
 
 <div id="modalElement" class="modal-container closed" data-open="false">
-    <div class="modal">
-        <header class="modal-header">
-            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close">X</button>' : ""}
-        </header>
+    <div class="modal">${getHeaderHTML(config)}
         <section class="modal-body">
             Lorem Ipsum
-        </section>
-        <footer class="modal-footer">${config.closingButton === "topbottom" || config.closingButton === "bottom" ? '\n            <button class="modal-cancel">Cancel</button>' : ""}${config.okButton === "default" ? '\n            <button class="modal-ok">Ok</button>' : ""}
-        </footer>
+        </section>${getFooterHTML(config)}
     </div>
-</div>
-        `.trim();
+</div>`;
+        }
+
+        return getModalHTML().trim();
     }
 
     static generateModalCSS(config) {
 
-        let modalHeaderClose = "";
+        function getHeaderCSS(config) {
 
-        if (config.closingButton !== "none") {
-            modalHeaderClose = `
-.modal-header .modal-close {
+            if (!config.showHeader && (config.closingButton === "none" || config.closeButton === "bottom"))
+                return "";
+
+            let closeButtonCSS = "";
+
+            if (config.closingButton !== "none") {
+                const closingButtonSelector = (!config.showHeader && (config.closingButton === "topbottom" || config.closingButton === "top")) ? ".modal > .modal-close" : ".modal-header .modal-close";
+                closeButtonCSS = `
+${closingButtonSelector} {
     width: 36px;
     height: 36px;
     color: ${config.closingButtonTextColor};
@@ -39,13 +73,30 @@ class ModalCodeGenerator {
     top: -16px;
     right: -16px;
 }
-.modal-header .modal-close:active {
-    background-position: 10px 10px;
-}
-.modal-header .modal-close:hover {
+${closingButtonSelector}:hover {
     background-color: ${config.closingButtonHoverColor};
 }`;
-        }
+            }
+            
+            if (!config.showHeader && (config.closingButton === "topbottom" || config.closingButton === "top")) {
+                return `
+/* Modal Close Button */` + closeButtonCSS;
+            }
+
+            const headerCSS = `
+/* Modal Header */
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+}${closeButtonCSS}
+.modal-header h3 {
+    margin: 0px;
+}`;
+
+            return headerCSS;
+
+        };
 
         let modalFooter = "";
 
@@ -140,16 +191,7 @@ class ModalCodeGenerator {
 .modal-container.open .modal {
     transform: scale(1);
 }
-
-/* Modal Header */
-.modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #ccc;
-    position: relative;
-}${modalHeaderClose}
-.modal-header h3 {
-    margin: 0px;
-}
+${getHeaderCSS(config)}
 
 /* Modal Body */
 .modal-body {

@@ -72,7 +72,11 @@
     position: relative;
 }
 
-.modal-body .modal-close,
+.modal-header.hide {
+    display: none;
+}
+
+.modal > .modal-close,
 .modal-header .modal-close {
     width: 36px;
     height: 36px;
@@ -81,13 +85,22 @@
     font-weight: bold;
     text-align: center;
     padding-top: 2px;
-    padding-right: 7px;
+    padding-right: 6px;
     border-radius: 50%;
     position: absolute;
     top: -16px;
     right: -16px;
 }
 
+.modal-header > .modal-close {
+    display: none;
+}
+
+.modal-header.hide > .modal-close {
+    display: block;
+}
+
+.modal > .modal-close:hover,
 .modal-header .modal-close:hover {
     background-color: #9c2929;
 }
@@ -114,6 +127,10 @@
     display: flex;
     gap: 8px;
     justify-content: center;
+}
+
+.modal-footer.hide {
+    display: none;
 }
 
 .modal-footer button {

@@ -40,21 +40,21 @@
                 <input class="input-group-item" type="color" name="modalBackdropColor" id="modalBackdropColor" value="#000000">
             </div>
             <div class="input-group input-group-radio">
-                <label class="input-group-label" for="modalHeader">Header</label>
+                <label class="input-group-label" for="modalShowHeader">Header</label>
                 <div class="radio-container">
-                    <input class="input-group-item" type="radio" id="modalHeaderTrue" name="modalHeader" value="true" checked>
-                    <label for="modalHeaderTrue">On</label>
-                    <input class="input-group-item" type="radio" id="modalHeaderFalse" name="modalHeader" value="false">
-                    <label for="modalHeaderFalse">Off</label>
+                    <input class="input-group-item" type="radio" id="modalShowHeaderTrue" name="modalShowHeader" value="true" checked>
+                    <label for="modalShowHeaderTrue">On</label>
+                    <input class="input-group-item" type="radio" id="modalShowHeaderFalse" name="modalShowHeader" value="false">
+                    <label for="modalShowHeaderFalse">Off</label>
                 </div>
             </div>
             <div class="input-group input-group-radio">
-                <label class="input-group-label" for="modalFooter">Footer</label>
+                <label class="input-group-label" for="modalShowFooter">Footer</label>
                 <div class="radio-container">
-                    <input class="input-group-item" type="radio" id="modalFooterTrue" name="modalFooter" value="true" checked>
-                    <label for="modalFooterTrue">On</label>
-                    <input class="input-group-item" type="radio" id="modalFooterFalse" name="modalFooter" value="false">
-                    <label for="modalFooterFalse">Off</label>
+                    <input class="input-group-item" type="radio" id="modalShowFooterTrue" name="modalShowFooter" value="true" checked>
+                    <label for="modalShowFooterTrue">On</label>
+                    <input class="input-group-item" type="radio" id="modalShowFooterFalse" name="modalShowFooter" value="false">
+                    <label for="modalShowFooterFalse">Off</label>
                 </div>
             </div>
             <div class="input-group">
@@ -129,6 +129,7 @@
                     <h3>Title</h3>
                     <button class="modal-close">X</button>
                 </header>
+                <button class="modal-close">X</button>
                 <section class="modal-body">
                     Lorem Ipsum
                 </section>
@@ -150,8 +151,8 @@
 
     <article id="modalCode" class="modal-container" data-open="false">
         <div class="modal">
+            <button class="modal-close">X</button>
             <section class="modal-body">
-                <button class="modal-close">X</button>
                 <div class="code code-html">
                     <h3>
                         HTML

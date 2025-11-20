@@ -7,7 +7,7 @@ class ModalCreator {
         this.modalElement = document.querySelector(modalContainer + " .modal");
         this.okButtonElement = document.querySelector(modalContainer + " .modal-ok");
         this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel");
-        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close");
+        this.closeButtonElements = document.querySelectorAll(modalContainer + " .modal-close");
 
         this.form = document.querySelector(form);
 
@@ -17,6 +17,8 @@ class ModalCreator {
             height: 280,
             backgroundColor: "#fff",
             backdropColor: "rgba(0, 0, 0, 0.3)",
+            showHeader: true,
+            showFooter: true,
             title: "Title",
             textColor: "#26353e",
             okButton: "default",
@@ -63,6 +65,10 @@ class ModalCreator {
         }
 
         if (property === "enterKey" || property === "escKey") {
+            return (value === "true");
+        }
+
+        if (property === "showHeader" || property === "showFooter") {
             return (value === "true");
         }
 
@@ -149,6 +155,28 @@ class ModalCreator {
                 const rgb = hexToRgb(backdropColor);
                 this.containerElement.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .3)`;
             },
+            showHeader(show) {
+
+                const showHeader = (show ===  "true");
+
+                if (showHeader) {
+                    this.modalElement.querySelector("header").classList.remove("hide");
+                } else {
+                    this.modalElement.querySelector("header").classList.add("hide");
+                }
+
+            },
+            showFooter(show) {
+
+                const showFooter = (show ===  "true");
+
+                if (showFooter) {
+                    this.modalElement.querySelector("footer").classList.remove("hide");
+                } else {
+                    this.modalElement.querySelector("footer").classList.add("hide");
+                }
+
+            },
             title(title) {
                 this.modalElement.getElementsByTagName("h3")[0].innerHTML = title;
             },
@@ -178,13 +206,13 @@ class ModalCreator {
             closingButton(value) {
                 const closeButtonDisplay = (value === "topbottom" || value === "top") ? "block" : "none";
                 const cancelButtonDisplay = (value === "topbottom" || value === "bottom") ? "block" : "none";
-                this.closeButtonElement.style.display = closeButtonDisplay;
+                this.closeButtonElements.forEach((item) => item.style.display = closeButtonDisplay);
                 this.cancelButtonElement.style.display = cancelButtonDisplay;
             },
             closingButtonColor(color) {
 
                 this.cancelButtonElement.style.backgroundColor = color;
-                this.closeButtonElement.style.backgroundColor = color;
+                this.closeButtonElements.forEach((item) => item.style.backgroundColor = color);
 
                 const rgbHoverColor = getHoverColor(hexToRgb(color));
                 configHoverColorCSS(rgbHoverColor, ".modal-header .modal-close");
@@ -193,7 +221,7 @@ class ModalCreator {
 
                 const textColor = getTextColor(hexToRgb(color));
                 this.cancelButtonElement.style.color = textColor;
-                this.closeButtonElement.style.color = textColor;
+                this.closeButtonElements.forEach((item) => item.style.color = textColor);
                 this.modalProperties.closingButtonTextColor = textColor;
 
             },
