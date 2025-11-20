@@ -320,7 +320,7 @@ class Modal {
 }
 
 const modal = new Modal("#modalElement", ".open-modal-button"); // You can pass a callback function as a third argument to be executed on "ok button" (receive container modal element as parameter).
-modal.openModal(); // Remeber to open modal via javascript so it can be properly pushed into the internal class stack.
+modal.openModal(); // Remember to open modal via javascript so it can be properly pushed into the internal class stack.
         `.trim();
     }
 
