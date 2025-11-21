@@ -21,7 +21,7 @@ class Modal {
 
         this.okButtonElement = this.configs.okButton ? document.querySelector(modalContainer + " .modal-ok") : undefined;
         this.cancelButtonElement = this.configs.cancelButton ? document.querySelector(modalContainer + " .modal-cancel") : undefined;
-        this.closeButtonElement = this.configs.closeButton ? document.querySelector(modalContainer + " .modal-close") : undefined;
+        this.closeButtonElements = this.configs.closeButton ? document.querySelectorAll(modalContainer + " .modal-close") : undefined;
 
         this.#init();
 
@@ -47,23 +47,30 @@ class Modal {
             });
         });
 
-        const closeButtons = [this.cancelButtonElement, this.closeButtonElement];
-        closeButtons.forEach((item) => {
-            item?.addEventListener("click", (event) => this.closeModal());
+        this.closeButtonElements?.forEach((item) => {
+            item    .addEventListener("click", (event) => this.closeModal(true));
         });
 
-        this.okButtonElement?.addEventListener("click", (event) => this.submitModal());
+        this.cancelButtonElement?.addEventListener("click", (event) => this.closeModal(true));
+
+        this.okButtonElement?.addEventListener("click", (event) => this.submitModal(true));
 
         document.addEventListener("keydown", (event) => {
-            if (this.configs.escKey && event.key === "Escape") this.closeModal();
+            if (this.configs.escKey && event.key === "Escape")
+                this.closeModal(true);
             const isKeyPressedOnOpenButton = Array.from(this.openButtonElements).some(btn => 
                 btn && (btn === event.target || btn.contains(event.target)));
-            if (this.configs.enterKey && event.key === "Enter" && !isKeyPressedOnOpenButton) this.submitModal();
+            if (this.configs.enterKey && event.key === "Enter" && !isKeyPressedOnOpenButton)
+                this.submitModal(true);
         });
 
     }
 
-    isThisCurrentActiveModal() {
+    #modalStackIndex(containerElement) {
+        return Modal.activeModalsLIFOStack.findIndex(element => element === containerElement);
+    }
+
+    #isThisCurrentActiveModal() {
         return (Modal.activeModalsLIFOStack[Modal.activeModalsLIFOStack.length - 1] === this.containerElement);
     }
 
@@ -77,20 +84,21 @@ class Modal {
             this.openCallback(this.containerElement);
         }
 
-        Modal.activeModalsLIFOStack.push(this.containerElement);
+        if (this.#modalStackIndex(this.containerElement) < 0)
+            Modal.activeModalsLIFOStack.push(this.containerElement);
 
         setTimeout(() => { this.containerElement.dataset.open = "true"; }, 50);
 
     }
 
-    closeModal() {
+    closeModal(activedViaEvent) {
 
-        if (!this.isThisCurrentActiveModal())
+        if (activedViaEvent && !this.#isThisCurrentActiveModal())
             return
 
         this.containerElement.dataset.open = "false"
 
-        Modal.activeModalsLIFOStack.pop(this.containerElement);
+        Modal.activeModalsLIFOStack.splice(this.#modalStackIndex(this.containerElement), 1);
 
         if (this.okButtonRefocus)
             setTimeout(() => this.okButtonRefocus.focus(), 100);
@@ -102,9 +110,9 @@ class Modal {
 
     }
 
-    submitModal() {
+    submitModal(activedViaEvent) {
 
-        if (!this.isThisCurrentActiveModal())
+        if (activedViaEvent && !this.#isThisCurrentActiveModal())
             return
 
         if (this.submitCallback && typeof this.submitCallback === "function")    

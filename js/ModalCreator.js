@@ -184,7 +184,7 @@ class ModalCreator {
                 this.modalElement.style.color = color;
             },
             okButton(value) {
-                if (value === "default") {
+                if (ModalCreator.hasOkButton(value)) {
                     this.okButtonElement.style.display = "block";
                 } else {
                     this.okButtonElement.style.display = "none";
@@ -204,8 +204,8 @@ class ModalCreator {
 
             },
             closingButton(value) {
-                const closeButtonDisplay = (value === "topbottom" || value === "top") ? "block" : "none";
-                const cancelButtonDisplay = (value === "topbottom" || value === "bottom") ? "block" : "none";
+                const closeButtonDisplay = ModalCreator.hasCloseButton(value) ? "block" : "none";
+                const cancelButtonDisplay = ModalCreator.hasCancelButton(value) ? "block" : "none";
                 this.closeButtonElements.forEach((item) => item.style.display = closeButtonDisplay);
                 this.cancelButtonElement.style.display = cancelButtonDisplay;
             },
@@ -233,6 +233,18 @@ class ModalCreator {
             }
         };
 
+    }
+
+    static hasCloseButton(value) {
+        return (value === "topbottom" || value === "top");
+    }
+
+    static hasCancelButton(value) {
+        return (value === "topbottom" || value === "bottom");
+    }
+
+    static hasOkButton(value) {
+        return (value === "default");
     }
 
 }

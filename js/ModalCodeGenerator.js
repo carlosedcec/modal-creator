@@ -4,13 +4,16 @@ class ModalCodeGenerator {
 
         function getHeaderHTML(config) {
 
-            let headerHTML = `
+            let headerHTML = "";
+
+            if (ModalCreator.hasCloseButton(config.closingButton))
+                headerHTML = `
         <button class="modal-close">X</button>`;
 
             if (config.showHeader) {
                 headerHTML = `
         <header class="modal-header">
-            <h3>${config.title}</h3>${config.closingButton === "topbottom" || config.closingButton === "top" ? '\n            <button class="modal-close">X</button>' : ""}
+            <h3>${config.title}</h3>${ModalCreator.hasCloseButton(config.closingButton) ? '\n            <button class="modal-close">X</button>' : ""}
         </header>`;
             }
 
@@ -23,7 +26,7 @@ class ModalCodeGenerator {
 
             if (config.showFooter) {
                 footerHTML = `
-        <footer class="modal-footer">${config.closingButton === "topbottom" || config.closingButton === "bottom" ? '\n            <button class="modal-cancel">Cancel</button>' : ""}${config.okButton === "default" ? '\n            <button class="modal-ok">Ok</button>' : ""}
+        <footer class="modal-footer">${ModalCreator.hasCancelButton(config.closingButton) ? '\n            <button class="modal-cancel">Cancel</button>' : ""}${ModalCreator.hasOkButton(config.okButton) ? '\n            <button class="modal-ok">Ok</button>' : ""}
         </footer>`;
             }
 
@@ -32,7 +35,7 @@ class ModalCodeGenerator {
         }
 
         function getModalHTML() {
-        return `
+            return `
 <button class="open-modal-button ">Open Modal</button>
 
 <div id="modalElement" class="modal-container closed" data-open="false">
@@ -57,7 +60,7 @@ class ModalCodeGenerator {
             let closeButtonCSS = "";
 
             if (config.closingButton !== "none") {
-                const closingButtonSelector = (!config.showHeader && (config.closingButton === "topbottom" || config.closingButton === "top")) ? ".modal > .modal-close" : ".modal-header .modal-close";
+                const closingButtonSelector = (!config.showHeader && ModalCreator.hasCloseButton(config.closingButton)) ? ".modal > .modal-close" : ".modal-header .modal-close";
                 closeButtonCSS = `
 ${closingButtonSelector} {
     width: 36px;
@@ -78,7 +81,7 @@ ${closingButtonSelector}:hover {
 }`;
             }
             
-            if (!config.showHeader && (config.closingButton === "topbottom" || config.closingButton === "top")) {
+            if (!config.showHeader && ModalCreator.hasCloseButton(config.closingButton)) {
                 return `
 /* Modal Close Button */` + closeButtonCSS;
             }
@@ -98,10 +101,12 @@ ${closingButtonSelector}:hover {
 
         };
 
-        let modalFooter = "";
+        function getFooterCSS(config) {
+            
+            if (!config.showFooter)
+                return "";
 
-        if (config.okButton !== "none" || (config.closingButton === "topbottom" || config.closingButton === "bottom")) {
-            modalFooter = `
+            let modalFooterCSS = `
 /* Modal Footer */
 .modal-footer {
     padding: 20px;
@@ -114,12 +119,9 @@ ${closingButtonSelector}:hover {
     padding: 12px 20px;
     border-radius: 4px;
 }`;
-        }
 
-        let modalFooterCancel = "";
-
-        if (config.closingButton === "topbottom" || config.closingButton === "bottom") {
-            modalFooterCancel = `
+            if (ModalCreator.hasCancelButton(config.closingButton)) {
+                modalFooterCSS += `
 .modal-footer .modal-cancel {
     color: ${config.closingButtonTextColor};
     background-color: ${config.closingButtonColor};
@@ -127,12 +129,10 @@ ${closingButtonSelector}:hover {
 .modal-footer .modal-cancel:hover {
     background-color: ${config.closingButtonHoverColor};
 }`;
-        }
+            }
 
-        let modalFooterOk = "";
-
-        if (config.okButton !== "none") {
-            modalFooterOk = `
+            if (ModalCreator.hasOkButton(config.okButton)) {
+                modalFooterCSS += `
 .modal-footer .modal-ok {
     color: ${config.okButtonTextColor};
     background-color: ${config.okButtonColor};
@@ -141,9 +141,37 @@ ${closingButtonSelector}:hover {
     background-color: ${config.okButtonHoverColor};
 }
 `;
+            }
+
+            return modalFooterCSS;
         }
 
-        return `
+        function getButtonsCSS(config) {
+
+            if (ModalCreator.hasCloseButton(config.closingButton) || ModalCreator.hasCancelButton(config.closingButton) || ModalCreator.hasOkButton(config.okButton)) {
+                return `
+/* Modal Buttons */
+.modal button {
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    transition: background-color .2s ease-in-out, transform 0s ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+.modal button:focus-visible {
+    outline: 2px solid var(--color1);
+}
+.modal button:active {
+    transform: scale(0.97);
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+}`;
+            }
+
+            return "";
+
+        }
+
+        function getModalCSS(config) {
+            return `
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");    
 
 /* Modal Container */
@@ -198,21 +226,7 @@ ${getHeaderCSS(config)}
     padding: 20px;
     flex: 1;
 }
-${modalFooter}${modalFooterCancel}${modalFooterOk}
-/* Modal Buttons */
-.modal button {
-    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.3);
-    transition: background-color .2s ease-in-out, transform 0s ease-in-out;
-    cursor: pointer;
-    border: none;
-}
-.modal button:focus-visible {
-    outline: 2px solid var(--color1);
-}
-.modal button:active {
-    transform: scale(0.97);
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
-}
+${getFooterCSS(config)}${getButtonsCSS(config)}
 
 /* Open Modal Button */
 .open-modal-button {
@@ -227,71 +241,83 @@ ${modalFooter}${modalFooterCancel}${modalFooterOk}
     font-weight: bold;
     cursor: pointer;
     position: absolute;
-}
-        `.trim();
+}`;
+        }
+
+        return getModalCSS(config).trim();
     }
 
     static generateModalJS(config) {
 
-        let buttons = "";
-        if (config.okButton === "default")
-            buttons += '\n        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok")';
-        if (config.closingButton === "topbottom" || config.closingButton === "top")
-            buttons += '\n        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close")';
-        if (config.closingButton === "topbottom" || config.closingButton === "bottom")
-            buttons += '\n        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel")';
+        function getConstructorButtonsJS() {
 
-        let closeButtons = "";
+            let buttons = "";
+            if (ModalCreator.hasOkButton(config.okButton) && config.showFooter)
+                buttons += '\n        this.okButtonElement = document.querySelector(modalContainer + " .modal-ok")';
+            if (ModalCreator.hasCloseButton(config.closingButton))
+                buttons += '\n        this.closeButtonElement = document.querySelector(modalContainer + " .modal-close")';
+            if (ModalCreator.hasCancelButton(config.closingButton) && config.showFooter)
+                buttons += '\n        this.cancelButtonElement = document.querySelector(modalContainer + " .modal-cancel")';
 
-        if (config.closingButton !== "none") {
-
-            let closeButtonsArray = [];
-            if (config.closingButton === "topbottom" || config.closeButtons === "top");
-                closeButtonsArray.push("this.closeButtonElement");
-            if (config.closingButton === "topbottom" || config.closeButtons === "bottom");
-                closeButtonsArray.push("this.cancelButtonElement");
-
-            closeButtonsArray = "[" + closeButtonsArray.toString().replaceAll(",", ", ") + "]";
-
-            closeButtons = `
-        const closeButtons = ${closeButtonsArray};
-        closeButtons.forEach((item) => {
-            item?.addEventListener("click", (event) => this.closeModal());
-        });`;
+            return buttons;
 
         }
 
-        let okButton = "";
-
-        if (config.okButton !== "none") {
-            okButton = `
-        this.okButtonElement?.addEventListener("click", (event) => this.submitModal());`;
-        }
-
-        let eventsKey = "";
-
-        if (config.enterKey || config.escKey) {
-
-            let events = "";
-            if (config.escKey) {
-                events += `
-            if (event.key === "Escape") this.closeModal();`;
+        function getCloseButtonJS(config) {
+            if (ModalCreator.hasCloseButton(config.closingButton)) {
+                return `
+        this.closeButtonElement.addEventListener("click", (event) => this.closeModal(true));`;
             }
-            if (config.enterKey) {
-                events += `
+            return "";
+        }
+
+        function getCancelButtonJS(config) {
+            if (ModalCreator.hasCancelButton(config.closingButton) && config.showFooter) {
+                return `
+        this.cancelButtonElement.addEventListener("click", (event) => this.closeModal(true));`;
+            }
+            return "";
+        }
+
+        function getOkButtonEventJS(config) {
+            if (ModalCreator.hasOkButton(config.okButton) && config.showFooter) {
+                return `
+        this.okButtonElement.addEventListener("click", (event) => this.submitModal(true));`;
+            }
+            return "";
+        }
+
+        function getKeyEvents(config) {
+
+            let keyEvents = "";
+
+            if (config.enterKey || config.escKey) {
+
+                let events = "";
+                if (config.escKey) {
+                    events += `
+            if (event.key === "Escape") this.closeModal(true);`;
+            }
+                if (config.enterKey) {
+                    events += `
             const isKeyPressedOnOpenButton = Array.from(this.openButtonElements).some(btn => 
                 btn && (btn === event.target || btn.contains(event.target)));
-            if (event.key === "Enter" && !isKeyPressedOnOpenButton) this.submitModal();`;
+            if (event.key === "Enter" && !isKeyPressedOnOpenButton) this.submitModal(true);`;
+                }
+
+                keyEvents = `
+        document.addEventListener("keyup", (event) => {${events}
+        });`;
+
             }
 
-            eventsKey = `
-        document.addEventListener("keyup", (event) => {${events}
-        });
-            `;
+            return keyEvents;
 
         }
 
-        return `
+        function getModalJS() {
+
+            return `
 class Modal {
 
     static activeModalsLIFOStack = [];
@@ -301,7 +327,7 @@ class Modal {
         this.openButtonElements = document.querySelectorAll(openButton);        
         this.containerElement = document.querySelector(modalContainer);
         this.modalElement = document.querySelector(modalContainer + " .modal");
-        ${buttons}
+        ${getConstructorButtonsJS(config)}
 
         this.submitCallback = submitCallback;
 
@@ -322,12 +348,18 @@ class Modal {
                 }
             });
         });
-        ${closeButtons}
-        ${okButton}
-        ${eventsKey}
+        ${getCloseButtonJS(config)}
+        ${getCancelButtonJS(config)}
+        ${getOkButtonEventJS(config)}
+        ${getKeyEvents(config)}
+
     }
 
-    isThisCurrentActiveModal() {
+    #modalStackIndex(containerElement) {
+        return Modal.activeModalsLIFOStack.findIndex(element => element === containerElement);
+    }
+
+    #isThisCurrentActiveModal() {
         return (Modal.activeModalsLIFOStack[Modal.activeModalsLIFOStack.length - 1] === this.containerElement);
     }
 
@@ -341,20 +373,21 @@ class Modal {
             this.openCallback(this.containerElement);
         }
 
-        Modal.activeModalsLIFOStack.push(this.containerElement);
+        if (this.#modalStackIndex(this.containerElement) < 0)
+            Modal.activeModalsLIFOStack.push(this.containerElement);
 
         setTimeout(() => { this.containerElement.dataset.open = "true"; }, 50);
 
     }
 
-    closeModal() {
+    closeModal(activedViaEvent) {
 
-        if (!this.isThisCurrentActiveModal())
+        if (activedViaEvent && !this.#isThisCurrentActiveModal())
             return
 
         this.containerElement.dataset.open = "false"
 
-        Modal.activeModalsLIFOStack.pop(this.containerElement);
+        Modal.activeModalsLIFOStack.splice(this.#modalStackIndex(this.containerElement), 1);
 
         if (this.okButtonRefocus)
             setTimeout(() => this.okButtonRefocus.focus(), 100);
@@ -366,9 +399,9 @@ class Modal {
 
     }
 
-    submitModal() {
+    submitModal(activedViaEvent) {
 
-        if (!this.isThisCurrentActiveModal())
+        if (activedViaEvent && !this.#isThisCurrentActiveModal())
             return
 
         if (this.submitCallback && typeof this.submitCallback === "function")    
@@ -382,8 +415,12 @@ class Modal {
 
 const modal = new Modal("#modalElement", ".open-modal-button"); // You can pass a callback function as a third argument to be executed on "ok button" (receive modal container element as parameter).
 // Remember to always open modal via javascript so it can be properly pushed into the internal class stack.
-modal.openModal(); // You can pass a callback function as a argument to be executed on open (receive modal container element as parameter).
-        `.trim();
+modal.openModal(); // You can pass a callback function as a argument to be executed on open (receive modal container element as parameter).`;
+
+    }
+
+        return getModalJS(config).trim();
+
     }
 
 }
