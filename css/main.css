@@ -110,19 +110,6 @@ main {
     border-radius: 8px;
 }
 
-#modalPreviewBackground span {
-    color: #bbb;
-    font-size: 0.7rem;
-    position: absolute;
-    bottom: 32px;
-    right: 24px;
-}
-
-#modalPreviewBackground span a {
-    color: inherit;
-    text-decoration: none;
-}
-
 @media (max-width: 900px) {
     #modalPreview,
     #modalPreviewBackground {
